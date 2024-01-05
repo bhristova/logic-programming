@@ -1,0 +1,1 @@
+prolog solutions for FMI course Logic programming
