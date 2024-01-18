@@ -5,6 +5,7 @@
 и изтрива петото срещнато неизтрито до момента число.
 Да ce дефинира на пролог двуместен предикат ivan_last_erased(L, K), който по дадени непразен списък
 от естествени числа L и естествено число К, разпознава дали последното изтрито от Иванчо число с К.
+https://github.com/YanaRGeorgieva/Logic-programming/blob/master/%D0%98%D0%B7%D0%BF%D0%B8%D1%82%D0%B8%20%D0%BE%D1%82%20%D0%BC%D0%B8%D0%BD%D0%B0%D0%BB%D0%B8%20%D0%B3%D0%BE%D0%B4%D0%B8%D0%BD%D0%B8/%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BD%D0%B8/%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BD%D0%B8%20%D0%9A%D0%9D%202022-2023/received_862181525035684.jpeg
 */
 
 append([],B,B).
