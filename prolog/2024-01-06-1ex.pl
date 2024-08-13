@@ -4,28 +4,24 @@
 генерира в Y списък без повторения от точно тези естествени числа,
 които са тегла на списък X, съдържащ само прости числа. */
 
-append([], B, B).
-append([H|T],B,[H|T1]):-append(T,B,T1).
+append([],B,B).
+append([H|T],R,[H|T1]):-append(T,R,T1).
 
-member(X,L):-append([X],_,L2),append(_,L2,L).
+member(A,L):-append([A],_,L1),append(_,L1,L).
 
-get_weight([],0).
-get_weight([H|T],R1):-get_weight(T,R), R1 is R + H.
+list_weight([],0).
+list_weight([H|L],W):-list_weight(L,W1),W is W1+H.
 
-get_lists_weights([],[]).
-get_lists_weights([H|T],[W|R]):-get_weight(H,W),get_lists_weights(T,R).
+prime_helper(_,E,E).
+prime_helper(N,S,E):-not((0 is mod(N,S))),S1 is S+1,prime_helper(N,S1,E).
 
-remove_duplicates([],[]).
-remove_duplicates([H|T],R):-member(H,T),remove_duplicates(T,R).
-remove_duplicates([H|T],[H|R]):-not(member(H,T)),remove_duplicates(T,R).
+is_prime_number(N):-N>2,E is N-1,prime_helper(N,2,E).
 
-generate_between(S,E,S):-S =< E.
-generate_between(S,E,R):-S<E,S1 is S+1,generate_between(S1,E,R).
+p([],[]).
+p([LH|LL],R):-list_weight(LH,LW),p(LL,R),member(LW,R).
+p([LH|LL],R):-list_weight(LH,LW),p(LL,R),not(is_prime_number(LW)).
+p([LH|LL],[LW|R]):-list_weight(LH,LW),p(LL,R),not((member(LW,R))),is_prime_number(LW).
 
-is_prime(X):-not((generate_between(2,X-1,R),0 is mod(X,R))),X\=1.
-
-remove_composite_numbers([],[]).
-remove_composite_numbers([H|T],[H|R]):-is_prime(H), remove_composite_numbers(T,R).
-remove_composite_numbers([H|T],R):-not(is_prime(H)), remove_composite_numbers(T,R).
-
-p(X,Y):-get_lists_weights(X,Y1),remove_duplicates(Y1,Y2),remove_composite_numbers(Y2,Y).
+/* Example:
+p([[2,2,3],[4,5,6],[3,8,9],[3,7,2,5],[1,1,3],[4,3]],T)
+should return T = [17, 5, 7] */

@@ -16,8 +16,10 @@ member(A,L):-append([A],_,L2),append(_,L2,L).
 get_neighbours(V,E,E2):-member([V,E2],E).
 
 exists_k_path(U,U,0,_).
-exists_k_path(V,U,K,E):-K>0,V\=U,get_neighbours(V,E,N),K1 is K - 1,exists_k_path(N,U,K1,E).
+exists_k_path(V,U,K,E):-K>0,K1 is K-1,get_neighbours(V,E,N),exists_k_path(N,U,K1,E).
 
-not_k_paths(E,K):-get_neighbours(E1,E,EN),not(exists_k_path(E1,EN,K,E)).
+not_k_graph(E,K):-get_neighbours(E1,E,EN),not(exists_k_path(E1,EN,K,E)).
 
-рс_Gr(E,K):-not(not_k_paths(E,K)).
+рс_Gr(E,K):-not(not_k_graph(E,K)).
+
+/* Example: рс_Gr([[1, 2],[2,3],[3,1],[1,3],[3, 2],[2, 1]],2). */

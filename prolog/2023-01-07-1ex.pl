@@ -7,36 +7,31 @@
 от естествени числа L и естествено число К, разпознава дали последното изтрито от Иванчо число с К.
 https://github.com/YanaRGeorgieva/Logic-programming/blob/master/%D0%98%D0%B7%D0%BF%D0%B8%D1%82%D0%B8%20%D0%BE%D1%82%20%D0%BC%D0%B8%D0%BD%D0%B0%D0%BB%D0%B8%20%D0%B3%D0%BE%D0%B4%D0%B8%D0%BD%D0%B8/%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BD%D0%B8/%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BD%D0%B8%20%D0%9A%D0%9D%202022-2023/received_862181525035684.jpeg
 */
+append1([],B,B).
+append1([H|T],B,[H|T1]):-append1(T,B,T1).
 
-append([],B,B).
-append([H|T],B,[H|T1]):-append(T,B,T1).
+member(A,L):-append1([A],_,L2),append1(_,L2,L).
 
-member([K],K).
-member(L,K):-append([K],_,L2),append(_,L2,L).
+find_max2(L,M):-member(M,L),not((member(M1,L),M1>M)).
 
-max(L,M):-member(L,M),not((member(L,A),A>M)).
+concat([],A,A).
+concat([H|T],L2,[H|T1]):-concat(T,L2,T1).
 
-concat([],B,B).
-concat([H|T],B,[H|T1]):-concat(T,B,T1).
+list_len([],0).
+list_len([_|T],C):-list_len(T,C1),C is C1 + 1.
 
-split_by_fifth_element([_|T],[],T,C):-C==5.
-split_by_fifth_element([К],[К],[],C):-C<5.
-split_by_fifth_element([H|T],[H|RL],RR,C):-C<5,C1 is C+1,split_by_fifth_element(T,RL,RR,C1).
-split_by_fifth_element(L,RL,RR):-split_by_fifth_element(L,RL,RR,1).
+remove_max([],[]).
+remove_max(L,R):-find_max2(L,M),concat([M],L1,L2),concat(L3,L2,L),concat(L1,L3,R).
 
-split_by_number([],_,[],[]).
-split_by_number([K],K,[],[]).
-split_by_number([K|T],K,[],T).
-split_by_number([H|T],K,[H|RL],RR):-H\=K,split_by_number(T,K,RL,RR).
+remove_kth_element([_|T],K,K,LT,R):-concat(T,LT,R).
+remove_kth_element([],K,C,LT,R):-remove_kth_element(LT,K,C,[],R).
+remove_kth_element([H|T],K,C,LT,R):-C<K,C1 is C+1,concat(LT,[H],RR),remove_kth_element(T,K,C1,RR,R).
 
-reverse([],[]).
-reverse([H|T],R):-reverse(T,R1),append(R1,[H],R).
+remove_all_kth_elements([H],_,H).
+remove_all_kth_elements(L,K,RE):-list_len(L,LL),LL>0,
+remove_kth_element(L,K,1,[],R),remove_all_kth_elements(R,K,RE).
 
-len([],0).
-len([_|T],R1):-length(T,R),R1 is R+1.
+ivan_last_erased(L,K):-remove_max(L,R),remove_all_kth_elements(R,5,K).
 
-remove_every_fifth([K],K).
-remove_every_fifth(L,K):-reverse(L,[H|T]),len([H|T],P),P==5,H==K.
-remove_every_fifth(L,K):-len(L,P),P>5,split_by_fifth_element(L,RL,RR),concat(RR,RL,R),remove_every_fifth(R,K).
-
-ivan_last_erased(L,K):-max(L,M),split_by_number(L,M,RL,RR),concat(RR,RL,R),remove_every_fifth(R,K).
+/* Example: ivan_last_erased([1,3,18,9,5,6,7,10,22,13,4,5,19,2,8,9,14],T)
+should return T = 8 */
